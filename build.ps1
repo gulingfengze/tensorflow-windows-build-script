@@ -106,7 +106,7 @@ choco feature enable -n allowGlobalConfirmation | Out-Null # Enable global confi
 
 if (!(CheckInstalled pacman)) {
     $version = askForVersion "20180531.0.0"
-    choco install msys2 --version $version --params "/NoUpdate /InstallDir:C:\msys64"
+    choco install msys2 --version $version --params "/NoUpdate /InstallDir:E:\SoftEnv\Msys2"
 }
 $ENV:Path += ";E:\SoftEnv\Msys2\usr\bin"
 $ENV:BAZEL_SH = "E:\SoftEnv\Msys2\usr\bin\bash.exe"
