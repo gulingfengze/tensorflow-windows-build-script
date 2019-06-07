@@ -108,8 +108,8 @@ if (!(CheckInstalled pacman)) {
     $version = askForVersion "20180531.0.0"
     choco install msys2 --version $version --params "/NoUpdate /InstallDir:C:\msys64"
 }
-$ENV:Path += ";C:\msys64\usr\bin"
-$ENV:BAZEL_SH = "C:\msys64\usr\bin\bash.exe"
+$ENV:Path += ";E:\SoftEnv\Msys2\usr\bin"
+$ENV:BAZEL_SH = "E:\SoftEnv\Msys2\usr\bin\bash.exe"
 
 if (!(CheckInstalled patch)) {
     pacman -S --noconfirm patch
@@ -130,8 +130,8 @@ if (!(CheckInstalled git)) {
     choco install git
 }
 
-if (!(CheckInstalled python "3.6.7")) {
-    $version = askForVersion "3.6.7"
+if (!(CheckInstalled python "3.6.5")) {
+    $version = askForVersion "3.6.5"
     choco install python --version $version --params "'TARGETDIR:C:/Python36'"
 }
 
@@ -191,7 +191,7 @@ $venvDir = "$rootDir\venv"
 # Create python environment.
 if (!$ReserveVenv) {
     mkdir $venvDir | Out-Null
-    py -3 -m venv venv
+    python3 -m venv venv
     .\venv\Scripts\Activate.ps1
     pip3 install six numpy wheel
     pip3 install keras_applications==1.0.5 --no-deps
@@ -211,10 +211,17 @@ if ($ReserveSource) {
 $ENV:PYTHON_BIN_PATH = "$VenvDir/Scripts/python.exe" -replace "[\\]", "/"
 $ENV:PYTHON_LIB_PATH = "$VenvDir/lib/site-packages" -replace "[\\]", "/"
 
-py configure.py
+python configure.py
 
 # Build
-Invoke-Expression ("bazel build " + $BazelBuildParameters)
+#Invoke-Expression ("bazel build " + $BazelBuildParameters)
+
+# Compiled so file
+Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
+Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
+# Compiled dll file
+Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
+Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
 
 # Shutdown Bazel
 bazel shutdown
