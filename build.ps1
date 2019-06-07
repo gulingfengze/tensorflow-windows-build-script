@@ -220,8 +220,8 @@ python configure.py
 Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
 Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
 # Compiled dll file
-Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
-Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
+#Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
+#Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
 
 # Shutdown Bazel
 bazel shutdown
