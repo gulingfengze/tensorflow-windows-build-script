@@ -177,7 +177,7 @@ if ($BuildCppAPI) {
     } elseif ($buildVersion -eq "v1.13.1") {
         # C++ Symbol Patch for v1.13.1
         git apply --ignore-space-change --ignore-white "..\patches\cpp_symbol.1.13.1.patch"
-        Copy-Item ..\patches\tf_exported_symbols_msvc.lds tensorflow\
+        #Copy-Item ..\patches\tf_exported_symbols_msvc.lds tensorflow\
     }
 }
 
@@ -191,7 +191,7 @@ $venvDir = "$rootDir\venv"
 # Create python environment.
 if (!$ReserveVenv) {
     mkdir $venvDir | Out-Null
-    python3 -m venv venv
+    python -m venv venv
     .\venv\Scripts\Activate.ps1
     pip3 install six numpy wheel
     pip3 install keras_applications==1.0.5 --no-deps
@@ -214,11 +214,11 @@ $ENV:PYTHON_LIB_PATH = "$VenvDir/lib/site-packages" -replace "[\\]", "/"
 python configure.py
 
 # Build
-#Invoke-Expression ("bazel build " + $BazelBuildParameters)
+Invoke-Expression ("bazel build " + $BazelBuildParameters)
 
 # Compiled so file
-Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
-Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
+#Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
+#Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
 # Compiled dll file
 #Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_cc.so --verbose_failures")
 #Invoke-Expression ("bazel build " + "--config=opt --config=cuda --define=no_tensorflow_py_deps=true --copt=-nvcc_options=disable-warnings //tensorflow:libtensorflow_framework.so --verbose_failures")
